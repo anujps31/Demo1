@@ -27,7 +27,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Trivy Installation
-      uses: actions/setup-java@v4
       run: 
         sudo apt-get install wget apt-transport-https gnupg lsb-release
         wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
