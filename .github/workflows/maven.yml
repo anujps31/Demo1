@@ -29,8 +29,11 @@ jobs:
     - uses: actions/checkout@v4
     - name: Trivy Installation
       run: 
-        wget https://github.com/aquasecurity/trivy/releases/download/v0.63.0-13-ge1beba2f2/trivy_0.63.0-13-ge1beba2f2_Linux-64bit.deb
-        sudo dpkg -i trivy_0.63.0-13-ge1beba2f2_Linux-64bit.deb
+        sudo apt-get install wget gnupg
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update -y
+        sudo apt-get install trivy -y
     - name: Trivy FS Scan
       run: trivy fs --format table -o fs-report.json .
 
